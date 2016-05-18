@@ -12,6 +12,7 @@ import java.lang.reflect.Method;
  * Created by imacmovil on 02/05/16.
  */
 public class ApManager {
+
     public static final String TAG = "ApManager";
 
     //check whether wifi hotspot on or off
@@ -27,20 +28,12 @@ public class ApManager {
     }
 
     // toggle wifi hotspot on or off
-    public static boolean configApState(Context context) {
+    public static boolean configApState(Context context, String ssid) {
         WifiManager wifimanager = (WifiManager) context.getSystemService(context.WIFI_SERVICE);
-//        WifiConfiguration wificonfiguration = null;
         WifiConfiguration wificonfiguration = new WifiConfiguration();
-        wificonfiguration.SSID = "\"iRED ES00000_00\"";
+        wificonfiguration.SSID = ssid;
         wificonfiguration.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
-//        wificonfiguration.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
-//        wificonfiguration.allowedProtocols.set(WifiConfiguration.Protocol.WPA);
-//        wificonfiguration.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
         wificonfiguration.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
-//        wificonfiguration.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
-//        wificonfiguration.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
-//        wificonfiguration.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
-//        wificonfiguration.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
 
         try {
             // if WiFi is on, turn it off

@@ -13,9 +13,11 @@
 		/>
 
     <Button
-        android:id="@+id/fab"
+        android:id="@+id/start"
         android:text="Iniciar"
-        android:layout_width="wrap_content"
+		android:layout_margin="10dp"
+		android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
 </LinearLayout>
