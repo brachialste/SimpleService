@@ -29,7 +29,7 @@ public class BSTProtocolMessage {
     // Bloque de datos de la trama.
     private JSONObject data;
     // Manejador del cifrado y descifrado
-    private DiffieHellmanManager diffieHellmanManager;
+//    private DiffieHellmanManager diffieHellmanManager;
     // Manejador del ofuscado Blowfish iRED
     private BlowfishManager blowfishManager;
 
@@ -40,7 +40,7 @@ public class BSTProtocolMessage {
      * @param data
      */
     public BSTProtocolMessage(String cmd, JSONObject data) {
-        diffieHellmanManager = DiffieHellmanManager.getInstance();
+//        diffieHellmanManager = DiffieHellmanManager.getInstance();
         blowfishManager = BlowfishManager.getInstance();
         this.cmd = cmd;
         this.data = data;
@@ -54,7 +54,7 @@ public class BSTProtocolMessage {
      * @param tramaByte
      */
     public BSTProtocolMessage(byte[] tramaByte) {
-        diffieHellmanManager = DiffieHellmanManager.getInstance();
+//        diffieHellmanManager = DiffieHellmanManager.getInstance();
         blowfishManager = BlowfishManager.getInstance();
         this.tramaByte = tramaByte;
         // procesamos el mensaje recibido
@@ -96,25 +96,25 @@ public class BSTProtocolMessage {
         // ciframos / ofuscamos las información
         String strCiphData = "";
         try {
-            if (!cmd.equals(BSTProtocolCommands.connect)) {
-                /** CIFRADO **/
-                if (diffieHellmanManager != null && diffieHellmanManager.isReady) {
-                    strCiphData = diffieHellmanManager.encryptBTData(strDatos);
-
-                    Log.d(TAG, "strDatos [cifrados] = " + strCiphData);
-
-                    // Se construye el mensaje
-                    trama = BSTProtocolUtils.stringToByte(Character.toString(SOF));
-                    trama = Utilities.appendByteArray(trama,
-                            BSTProtocolUtils.stringToByte(Character.toString(ENCRYPTED) + strCiphData));
-                    trama = Utilities.appendByteArray(trama,
-                            BSTProtocolUtils.stringToByte(Character.toString(EOF)));
-                } else {
-
-                    Log.e(TAG, "imposible cifrar, el manejador no esta listo");
-
-                }
-            } else {
+//            if (!cmd.equals(BSTProtocolCommands.connect)) {
+//                /** CIFRADO **/
+//                if (diffieHellmanManager != null && diffieHellmanManager.isReady) {
+//                    strCiphData = diffieHellmanManager.encryptBTData(strDatos);
+//
+//                    Log.d(TAG, "strDatos [cifrados] = " + strCiphData);
+//
+//                    // Se construye el mensaje
+//                    trama = BSTProtocolUtils.stringToByte(Character.toString(SOF));
+//                    trama = Utilities.appendByteArray(trama,
+//                            BSTProtocolUtils.stringToByte(Character.toString(ENCRYPTED) + strCiphData));
+//                    trama = Utilities.appendByteArray(trama,
+//                            BSTProtocolUtils.stringToByte(Character.toString(EOF)));
+//                } else {
+//
+//                    Log.e(TAG, "imposible cifrar, el manejador no esta listo");
+//
+//                }
+//            } else {
                 /** OFUSCADO **/
                 if (blowfishManager != null) {
                     strCiphData = blowfishManager.encryptBF(strDatos);
@@ -132,7 +132,7 @@ public class BSTProtocolMessage {
                     Log.e(TAG, "imposible ofuscar, el manejador no esta listo");
 
                 }
-            }
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -172,19 +172,19 @@ public class BSTProtocolMessage {
             if (datos_cifrados != null && !datos_cifrados.isEmpty()) {
                 String datos_descifrados = "";
                 // obtenemos el primer caracter para ssaber si esta cifrado u ofuscado
-                if (datos_cifrados.charAt(0) == ENCRYPTED) {
-                    /** DESCIFRADO **/
-                    if (diffieHellmanManager != null && diffieHellmanManager.isReady) {
-                        datos_descifrados = diffieHellmanManager.decryptBTData(datos_cifrados.substring(1));
-
-                        Log.d(TAG, "datos_descifrados = " + datos_descifrados);
-
-                    } else {
-
-                        Log.e(TAG, "imposible descifrar, el manejador no esta listo");
-
-                    }
-                } else if (datos_cifrados.charAt(0) == OBFUSCATED) {
+//                if (datos_cifrados.charAt(0) == ENCRYPTED) {
+//                    /** DESCIFRADO **/
+//                    if (diffieHellmanManager != null && diffieHellmanManager.isReady) {
+//                        datos_descifrados = diffieHellmanManager.decryptBTData(datos_cifrados.substring(1));
+//
+//                        Log.d(TAG, "datos_descifrados = " + datos_descifrados);
+//
+//                    } else {
+//
+//                        Log.e(TAG, "imposible descifrar, el manejador no esta listo");
+//
+//                    }
+//                } else if (datos_cifrados.charAt(0) == OBFUSCATED) {
                     /** DESOFUSCADO **/
                     if (blowfishManager != null) {
                         datos_descifrados = blowfishManager.decryptBF(datos_cifrados.substring(1));
@@ -196,12 +196,12 @@ public class BSTProtocolMessage {
                         Log.e(TAG, "imposible desofuscar, el manejador no esta listo");
 
                     }
-                } else {
-
-                    Log.e(TAG, "Trama recibida incorrecta");
-
-                    return;
-                }
+//                } else {
+//
+//                    Log.e(TAG, "Trama recibida incorrecta");
+//
+//                    return;
+//                }
 
                 // procesamos los datos descifrados
                 if (datos_descifrados != null && !datos_descifrados.isEmpty()) {

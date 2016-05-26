@@ -64,6 +64,7 @@ public class ServiceActivity extends Activity {
     private static final int MESSAGE_CONN = 4;
     private static final int MESSAGE_RQST = 5;
     private static final int MESSAGE_CLSE = 6;
+    private static final int MESSAGE_CONN2 = 7;
 
     private ArrayAdapter<String> mListViewArrayAdapter;
     private ListView mListView;
@@ -93,6 +94,10 @@ public class ServiceActivity extends Activity {
                 case MESSAGE_CONN:
                     String bstp_message = new String((byte[])msg.obj);
                     mListViewArrayAdapter.add("CONN:  " + bstp_message);
+                    break;
+                case MESSAGE_CONN2:
+                    String conn2_message = (String) msg.obj;
+                    mListViewArrayAdapter.add("CONN2:  " + conn2_message);
                     break;
                 case MESSAGE_RQST:
                     String rqst_message = new String((byte[])msg.obj);
@@ -203,6 +208,17 @@ public class ServiceActivity extends Activity {
             /* Simply echo the ping message. */
             sendUiMessage(MESSAGE_PING_REPLY, inStr);
             return inStr;
+        }
+
+        @Override
+        public String CONN2(String inStr) throws BusException {
+            logInfo("CONN2: " + inStr);
+            // enviamos a la interfase el mensaje recibido
+            sendUiMessage(MESSAGE_CONN2, inStr);
+
+            // respuesta
+            BSTProtocolMessage bstProtocolMessage = new BSTProtocolMessage(inStr.getBytes());
+            return new String(bstProtocolMessage.getTramaByte());
         }
 
         @Override

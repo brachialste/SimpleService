@@ -44,6 +44,15 @@ public interface SimpleInterface {
 
     /**
      * Método encargado de conectar dos entidades con mensajes para el protocolo BSTP
+     * @param inStr
+     * @return
+     * @throws BusException
+     */
+    @BusMethod
+    String CONN2(String inStr) throws BusException;
+
+    /**
+     * Método encargado de conectar dos entidades con mensajes para el protocolo BSTP
      * @param inBytes
      * @return
      * @throws BusException
