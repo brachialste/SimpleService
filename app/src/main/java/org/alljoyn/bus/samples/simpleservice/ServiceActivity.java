@@ -210,16 +210,16 @@ public class ServiceActivity extends Activity {
             return inStr;
         }
 
-        @Override
-        public String CONN2(String inStr) throws BusException {
-            logInfo("CONN2: " + inStr);
-            // enviamos a la interfase el mensaje recibido
-            sendUiMessage(MESSAGE_CONN2, inStr);
-
-            // respuesta
-            BSTProtocolMessage bstProtocolMessage = new BSTProtocolMessage(inStr.getBytes());
-            return new String(bstProtocolMessage.getTramaByte());
-        }
+//        @Override
+//        public String CONN2(String inStr) throws BusException {
+//            logInfo("CONN2: " + inStr);
+//            // enviamos a la interfase el mensaje recibido
+//            sendUiMessage(MESSAGE_CONN2, inStr);
+//
+//            // respuesta
+//            BSTProtocolMessage bstProtocolMessage = new BSTProtocolMessage(inStr.getBytes());
+//            return new String(bstProtocolMessage.getTramaByte());
+//        }
 
         @Override
         public byte[] CONN(byte[] inBytes) throws BusException {
@@ -233,40 +233,42 @@ public class ServiceActivity extends Activity {
                 logInfo("connect. ");
                 /** CONN **/
                 try {
-                    // inicializamos el canal seguro usando BSTP
-                    diffieHellmanManager = DiffieHellmanManager.createNewInstance();
-                    // genramos la llave pública
-                    String pk = diffieHellmanManager.generatePublicKey();
+//                    // inicializamos el canal seguro usando BSTP
+//                    diffieHellmanManager = DiffieHellmanManager.createNewInstance();
+//                    // genramos la llave pública
+//                    String pk = diffieHellmanManager.generatePublicKey();
                     JSONObject data = new JSONObject();
                     try {
-                        data.put("pk", pk);
+//                        data.put("pk", pk);
+                        data.put("pk", "1234567");
+                        data.put("otro", "Jose Luis Perez");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
-                    // generamos la llave privada
-                    if (diffieHellmanManager.generateSecretKey(bstProtocolMessage.getData().getString("pk"))) {
-                        // hacemos vibrar el dispositivo
-                        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                        // Vibrar por 500 mils
-                        v.vibrate(500);
-
-                        // reproducimos un sonido para la conexión Bluetooth
-                        MediaPlayer mp = MediaPlayer.create(ServiceActivity.this, R.raw.tone);
-                        mp.start();
-
+//                    // generamos la llave privada
+//                    if (diffieHellmanManager.generateSecretKey(bstProtocolMessage.getData().getString("pk"))) {
+//                        // hacemos vibrar el dispositivo
+//                        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+//                        // Vibrar por 500 mils
+//                        v.vibrate(500);
+//
+//                        // reproducimos un sonido para la conexión Bluetooth
+//                        MediaPlayer mp = MediaPlayer.create(ServiceActivity.this, R.raw.tone);
+//                        mp.start();
+//
                         // enviamos un mensaje a al interfase
                         sendUiMessage(MESSAGE_POST_TOAST, "Se ha iniciado sesión segura con un dispositivo");
 
                         Log.i(TAG, "Se ha iniciado sesión segura con un dispositivo");
-                    }
+//                    }
 
                     // enviamos el mensaje de respuesta
                     BSTProtocolMessage responseMessage = new BSTProtocolMessage(BSTProtocolCommands.connect, data);
                     return responseMessage.getTramaByte();
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
